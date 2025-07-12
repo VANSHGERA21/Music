@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Inspiration Series</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .poster {
+            width: 800px;
+            height: 600px;
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .poster::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(65, 105, 225, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .person-container {
+            position: relative;
+            margin-bottom: 30px;
+            z-index: 2;
+        }
+
+        .headphones {
+            position: absolute;
+            top: 5px;
+            left: 15px;
+            right: 15px;
+            height: 15px;
+            background: linear-gradient(145deg, #8a2be2, #4169e1);
+            border-radius: 15px;
+            z-index: 3;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .headphones::before,
+        .headphones::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border-radius: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+            border: 3px solid #8a2be2;
+        }
+
+        .headphones::before {
+            left: -20px;
+        }
+
+        .headphones::after {
+            right: -20px;
+        }
+
+        .musical-notes {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 24px;
+            color: #8a2be2;
+            opacity: 0.7;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .title {
+            font-size: 42px;
+            font-weight: bold;
+            color: #8a2be2;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+            position: relative;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #4169e1;
+            margin-bottom: 25px;
+            font-weight: 300;
+            line-height: 1.6;
+            max-width: 600px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .button-container {
+            position: relative;
+            z-index: 2;
+            margin-top: 20px;
+        }
+
+        .series-tag {
+            display: inline-block;
+            background: linear-gradient(45deg, #8a2be2, #4169e1);
+            color: #ffffff;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: none;
+            position: relative;
+        }
+
+        .series-tag:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(45deg, #4169e1, #8a2be2);
+        }
+
+        .series-tag:active {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(26, 26, 46, 0.95);
+            border-radius: 15px;
+            padding: 15px;
+            display: none;
+            min-width: 280px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            z-index: 100;
+            margin-bottom: 10px;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        .dropdown-option {
+            padding: 15px 20px;
+            color: #4169e1;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dropdown-option:last-child {
+            margin-bottom: 0;
+        }
+
+        .dropdown-option:hover {
+            background: linear-gradient(45deg, #8a2be2, #4169e1);
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(45deg, #8a2be2, #4169e1);
+            opacity: 0.1;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .wave::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264 1.088-.402l1.768-.661C33.64 15.347 39.647 14 50 14c10.271 0 15.362 1.222 24.629 4.928.955.383 1.869.74 2.75 1.072h6.225c-2.51-.73-5.139-1.691-8.233-2.928C65.888 13.278 60.562 12 50 12c-10.626 0-16.855 1.397-26.66 5.063l-1.767.662c-2.475.923-4.66 1.674-6.724 2.275h6.335zm0-20C13.258 2.892 8.077 4 0 4V2c5.744 0 9.951-.574 14.85-2h6.334zM77.38 0C85.239 2.966 90.502 4 100 4V2c-6.842 0-11.386-.542-16.396-2h-6.225zM0 14c8.44 0 13.718-1.21 22.272-4.402l1.768-.661C33.64 5.347 39.647 4 50 4c10.271 0 15.362 1.222 24.629 4.928C84.112 12.722 89.438 14 100 14v-2c-10.271 0-15.362-1.222-24.629-4.928C65.888 3.278 60.562 2 50 2 39.374 2 33.145 3.397 23.34 7.063l-1.767.662C13.223 10.84 8.163 12 0 12v2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E") repeat-x;
+        }
+
+        .person {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(145deg, #8a2be2, #4169e1);
+            border-radius: 50%;
+            position: relative;
+            margin: 0 auto;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+
+        .person::before {
+            content: '♪';
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .person::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            backdrop-filter: blur(10px);
+        }
+
+        .linkedin-accent {
+            color: #0077b5;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <div class="musical-notes">♪ ♫ ♪</div>
+        
+        <div class="person-container">
+            <div class="person pulse">
+            </div>
+        </div>
+        
+        <h1 class="title">Music & Motivation</h1>
+        
+        <p class="subtitle">
+            🎶 Join me on a journey where every song tells a story<br>
+            💡 And every lyric lights the way to <span class="linkedin-accent">professional growth</span>
+        </p>
+        
+        <div class="button-container">
+            <button class="series-tag" onclick="toggleDropdown()">Wake me up</button>
+            
+            <div id="dropdown" class="dropdown-menu">
+                <div class="dropdown-option" onclick="openLink('https://open.spotify.com/track/4xUQkrSXK9vPburA4Qmqk1?si=qCjbsYJHSNywxio0LnJDUw')">
+                    🎵 Play on Spotify
+                </div>
+                <div class="dropdown-option" onclick="openLink('https://youtu.be/YdKwr0l176M?si=y5mEszBPPWR_WZWX')">
+                    📺 Watch on YouTube
+                </div>
+                <div class="dropdown-option" onclick="openLink('https://music.apple.com/in/album/wake-me-up/1732009272?i=1732009276&ls')">
+                    🍎 Listen on Apple Music
+                </div>
+            </div>
+        </div>
+        
+        <div class="wave"></div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function openLink(url) {
+            window.open(url, '_blank');
+            // Close dropdown after selection
+            document.getElementById('dropdown').classList.remove('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('dropdown');
+            const button = document.querySelector('.series-tag');
+            
+            if (!dropdown.contains(event.target) && !button.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+  </html>
